@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Created by adam on 05/01/2021.
@@ -77,31 +76,24 @@ class BoardTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-1, 8, 10})
-    void occupy_InvalidRow_ShouldThrowException(int row) {
+    @ValueSource(ints = {-1, 64, 66})
+    void square_OfInvalidindex_ShouldThrowException(int index) {
         Board board = Board.of(8);
-        assertThatThrownBy(() -> board.occupy(row, 0)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> board.square(index)).isInstanceOf(IndexOutOfBoundsException.class);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 8, 10})
-    void occupy_InvalidColumn_ShouldThrowException(int column) {
+    void square_OfInvalidRow_ShouldThrowException(int row) {
         Board board = Board.of(8);
-        assertThatThrownBy(() -> board.occupy(0, column)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> board.square(row, 0)).isInstanceOf(IndexOutOfBoundsException.class);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 8, 10})
-    void isOccupied_OfInvalidRow_ShouldThrowException(int row) {
-        Board board = Board.of(8).occupy(4, 5);
-        assertThatThrownBy(() -> board.isOccupied(row, 0)).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {-1, 8, 10})
-    void isOccupied_OfInvalidColumn_ShouldThrowException(int column) {
-        Board board = Board.of(8).occupy(4, 5);
-        assertThatThrownBy(() -> board.isOccupied(0, column)).isInstanceOf(IllegalArgumentException.class);
+    void square_OfInvalidColumn_ShouldThrowException(int column) {
+        Board board = Board.of(8);
+        assertThatThrownBy(() -> board.square(0, column)).isInstanceOf(IndexOutOfBoundsException.class);
     }
 
     @Test
@@ -120,6 +112,12 @@ class BoardTest {
     void width_OfSimpleBoard_ShouldBeCorrect() {
         Board board = Board.of(8);
         assertThat(board.width()).isEqualTo(8);
+    }
+
+    @Test
+    void squares_OfSimpleBoard_ShouldBeCorrect() {
+        Board board = Board.of(8);
+        assertThat(board.squares()).isEqualTo(64);
     }
 
     @Test
@@ -143,5 +141,41 @@ class BoardTest {
             "x..x"
         );
         assertThat(board.occupied()).isEqualTo(5);
+    }
+
+    @Test
+    void square_ForIndexOnFirstRow_ShouldHaveCorrectRow() {
+        Board board = Board.of(8);
+        assertThat(board.square(2).row()).isEqualTo(0);
+    }
+
+    @Test
+    void square_ForIndexOnSubsequentRow_ShouldHaveCorrectRow() {
+        Board board = Board.of(8);
+        assertThat(board.square(10).row()).isEqualTo(1);
+    }
+
+    @Test
+    void square_ForIndexOnFirstRow_ShouldHaveCorrectCollumn() {
+        Board board = Board.of(8);
+        assertThat(board.square(2).column()).isEqualTo(2);
+    }
+
+    @Test
+    void square_ForIndexOnSubsequentRow_ShouldHaveCorrectColumn() {
+        Board board = Board.of(8);
+        assertThat(board.square(10).column()).isEqualTo(2);
+    }
+
+    @Test
+    void square_ForColumnOnFirstRow_ShouldHaveCorrectIndex() {
+        Board board = Board.of(8);
+        assertThat(board.square(0, 2).index()).isEqualTo(2);
+    }
+
+    @Test
+    void square_ForColumnOnSubsequentRow_ShouldHaveCorrectIndex() {
+        Board board = Board.of(8);
+        assertThat(board.square(1, 2).index()).isEqualTo(10);
     }
 }

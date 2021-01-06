@@ -29,12 +29,73 @@ public class Board {
     }
 
     /**
+     * The total number of squares on the board.
+     */
+    public int squares() {
+        return width * width;
+    }
+
+    /**
+     * The number of occupied squares on the board.
+     */
+    public int occupied() {
+        return squares.bitCount();
+    }
+
+    /**
+     * The square at the supplied index.
+     * <p>
+     * An exception will be thrown if the index is out of bounds.
+     */
+    public Square square(int index) {
+        if (index < 0 || index >= squares()) {
+            throw new IndexOutOfBoundsException(index);
+        } else {
+            return new Square(index);
+        }
+    }
+
+    /**
+     * The square at the supplied row and column.
+     * <p>
+     * An exception will be thrown if either index is out of bounds.
+     */
+    public Square square(int row, int column) {
+        if (row < 0 || row >= width) {
+            throw new IndexOutOfBoundsException("Row out of range: " + row);
+        } else if (column < 0 || column >= width) {
+            throw new IndexOutOfBoundsException("Column out of range: " + column);
+        } else {
+            return square(row * width + column);
+        }
+    }
+
+    /**
+     * Whether a square on the board is occupied by a queen.
+     * <p>
+     * An exception will be thrown if the index is out of bounds.
+     */
+    public boolean isOccupied(int index) {
+        return square(index).isOccupied();
+    }
+
+    /**
+     * Occupies the square at the supplied position with a queen.
+     * <p>
+     * An exception will be thrown the index is out of bounds, or there if
+     * there already is a queen occupying that square.
+     */
+    public Board occupy(int index) {
+        return square(index).occupy();
+    }
+
+    /**
      * Whether a square on the board is occupied by a queen.
      * <p>
      * An exception will be thrown if a row or column index is out of bounds.
      */
     public boolean isOccupied(int row, int column) {
-        return squares.testBit(bitIndex(row, column));
+        return square(row, column).isOccupied();
     }
 
     /**
@@ -44,14 +105,7 @@ public class Board {
      * or there if there already is a queen occupying that square.
      */
     public Board occupy(int row, int column) {
-        return new Board(squares.setBit(bitIndex(row, column)), width);
-    }
-
-    /**
-     * The number of occupied squares on the board.
-     */
-    public int occupied() {
-        return squares.bitCount();
+        return square(row, column).occupy();
     }
 
     @Override
@@ -72,7 +126,7 @@ public class Board {
         StringBuilder builder = new StringBuilder();
         for (int row = 0; row < width; row++) {
             for (int column = 0; column < width; column++) {
-                if (isOccupied(row, column)) {
+                if (square(row, column).isOccupied()) {
                     builder.append('x');
                 } else {
                     builder.append('.');
@@ -84,19 +138,57 @@ public class Board {
         return builder.toString();
     }
 
-    private int bitIndex(int row, int column) {
-        checkValid(row, column);
-        return row * width + column;
-    }
+    /**
+     * A square on this chessboard.
+     */
+    public class Square {
+        private final int index;
 
-    private void checkValid(int row, int column) {
-        checkValid(row);
-        checkValid(column);
-    }
+        public Square(int index) {
+            this.index = index;
+        }
 
-    private void checkValid(int index) {
-        if (index < 0 || index >= width) {
-            throw new IllegalArgumentException(String.format("Invalid index %d for board of width %d", index, width));
+        /**
+         * The unique index of this square.
+         */
+        public int index() {
+            return index;
+        }
+
+        /**
+         * The row index of this square.
+         */
+        public int row() {
+            return index / width;
+        }
+
+        /**
+         * The column index of this square.
+         */
+        public int column() {
+            return index % width;
+        }
+
+        /**
+         * Whether this square is occupied by a queen.
+         */
+        public boolean isOccupied() {
+            return squares.testBit(index);
+        }
+
+        /**
+         * Occupies this square with a queen.
+         * <p>
+         * This is an immutable operation - it will return a new board with this
+         * square occupied.
+         */
+        public Board occupy() {
+            return new Board(squares.setBit(index), width);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("(%d, %d)", row(), column());
         }
     }
 
@@ -131,7 +223,7 @@ public class Board {
                 }
             } else {
                 if (c == 'x') {
-                    board = board.occupy(row, column);
+                    board = board.square(row, column).occupy();
                 } else if (c != '.') {
                     throw new IllegalArgumentException(String.format("Unexpected character at index %d in \"%s\"", i, s));
                 }
