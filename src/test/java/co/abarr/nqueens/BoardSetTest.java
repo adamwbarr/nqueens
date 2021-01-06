@@ -1,5 +1,6 @@
 package co.abarr.nqueens;
 
+import co.abarr.nqueens.rule.Rule;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,5 +50,12 @@ class BoardSetTest {
         BoardSet set1 = BoardSet.of(board1);
         BoardSet set2 = BoardSet.of(board2);
         assertThat(set1.plus(set2)).containsExactly(board1, board2);
+    }
+
+    @Test
+    void satisfying_SimpleRule_ShouldReturnMatchingBoardsOnly() {
+        BoardSet set = BoardSet.of(Board.of(8), Board.of(9), Board.of(10));
+        Rule rule = board -> board.width() > 8;
+        assertThat(set.satisfying(rule)).containsExactly(Board.of(9), Board.of(10));
     }
 }

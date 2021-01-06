@@ -24,7 +24,7 @@ public interface Solver {
     /**
      * Filters the solution down to only those satisfying an additional rule.
      */
-    default Solver satisfying(Rule rule) {
+    default Solver andSatisfying(Rule rule) {
         return width -> solveFor(width).satisfying(rule);
     }
 
@@ -47,5 +47,5 @@ public interface Solver {
     /**
      * N-queens solutions with the additional constraint of no straight lines.
      */
-    Solver N_QUEENS_PLUS = N_QUEENS.satisfying(Rule.STRAIGHT_LINE.negate());
+    Solver N_QUEENS_EXTENDED = N_QUEENS.andSatisfying(Rule.STRAIGHT_LINES.negate());
 }

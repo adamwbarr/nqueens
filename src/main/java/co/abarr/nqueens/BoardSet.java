@@ -41,7 +41,13 @@ public class BoardSet extends AbstractSet<Board> {
      * modify this one.
      */
     public BoardSet satisfying(Rule rule) {
-        return null;
+        Set<Board> satisfying = new HashSet<>(size());
+        for (Board board : boards) {
+            if (rule.isSatisfiedBy(board)) {
+                satisfying.add(board);
+            }
+        }
+        return new BoardSet(satisfying);
     }
 
     /**

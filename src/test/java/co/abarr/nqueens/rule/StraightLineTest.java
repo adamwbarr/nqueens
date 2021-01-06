@@ -73,7 +73,7 @@ class StraightLineTest {
     }
 
     @Test
-    void isSatisifiedBy_TwoDownTwoRightLine_ShouldBeTrue(String s) {
+    void isSatisifiedBy_TwoDownTwoRightLine_ShouldBeTrue() {
         Board board = Board.fromString(
             "x....\n" +
             ".....\n" +
@@ -85,7 +85,7 @@ class StraightLineTest {
     }
 
     @Test
-    void isSatisifiedBy_TwoDownTwoLeftLine_ShouldBeTrue(String s) {
+    void isSatisifiedBy_TwoDownTwoLeftLine_ShouldBeTrue() {
         Board board = Board.fromString(
             "....x\n" +
             ".....\n" +
@@ -97,7 +97,7 @@ class StraightLineTest {
     }
 
     @Test
-    void isSatisifiedBy_OneDownThreeRightLine_ShouldBeTrue(String s) {
+    void isSatisifiedBy_OneDownThreeRightLine_ShouldBeTrue() {
         Board board = Board.fromString(
             "x.......\n" +
             "........\n" +
@@ -112,7 +112,7 @@ class StraightLineTest {
     }
 
     @Test
-    void isSatisifiedBy_OneDownThreeLeftLine_ShouldBeTrue(String s) {
+    void isSatisifiedBy_ThreeDownOneLeftLine_ShouldBeTrue() {
         Board board = Board.fromString(
             "..x.....\n" +
             "........\n" +
@@ -121,6 +121,21 @@ class StraightLineTest {
             "........\n" +
             "........\n" +
             "x.......\n" +
+            "........"
+        );
+        assertThat(rule.isSatisfiedBy(board)).isTrue();
+    }
+
+    @Test
+    void isSatisifiedBy_OneDownThreeLeftLine_ShouldBeTrue() {
+        Board board = Board.fromString(
+            ".......x\n" +
+            ".....x..\n" +
+            "...x....\n" +
+            "........\n" +
+            "........\n" +
+            "........\n" +
+            "........\n" +
             "........"
         );
         assertThat(rule.isSatisfiedBy(board)).isTrue();

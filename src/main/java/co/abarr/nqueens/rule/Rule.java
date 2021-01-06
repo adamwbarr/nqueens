@@ -138,5 +138,5 @@ public interface Rule {
      *     ..x..
      * </pre>
      */
-    Rule STRAIGHT_LINE = new StraightLine();
+    Rule STRAIGHT_LINES = new StraightLine();
 }

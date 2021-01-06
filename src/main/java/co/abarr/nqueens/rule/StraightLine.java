@@ -8,42 +8,33 @@ import co.abarr.nqueens.Board;
 class StraightLine implements Rule {
     @Override
     public boolean isSatisfiedBy(Board board) {
-        for (int i = 0; i < board.width(); i++) {
-            for (int j = 0; j < board.width(); j++) {
-                if (board.isOccupied(i, j)) {
-                    if (isLineFrom(board, i, j)) {
-                        return true;
-                    }
-                }
+        for (int i = 0; i < board.squares(); i++) {
+            Board.Square square = board.square(i);
+            if (square.isOccupied() && isLineFrom(square)) {
+                return true;
             }
         }
         return false;
     }
 
-    private boolean isLineFrom(Board board, int i0, int j0) {
-        int i1 = i0;
-        int j1 = j0 + 1;
-        if (j1 == board.width()) {
-            j1 = 0;
-            i1++;
-        }
-        for (; i1 < board.width(); i1++) {
-            for (; j1 < board.width(); j1++) {
-                if (board.isOccupied(i1, j1)) {
-                    int di = i1 - i0;
-                    int dj = j1 - j0;
-                    int gcd = gcd(di, dj);
-                    di /= gcd;
-                    dj /= gcd;
-                    int i2 = i1 + di;
-                    int j2 = j1 + dj;
-                    while (i2 < board.width() && j2 < board.width()) {
-                        if (board.isOccupied(i2, j2)) {
-                            return true;
-                        }
-                        i2 += di;
-                        j2 += dj;
+    private boolean isLineFrom(Board.Square square0) {
+        Board board = square0.board();
+        for (int i1 = square0.index() + 1; i1 < board.squares(); i1++) {
+            Board.Square square1 = board.square(i1);
+            if (square1.isOccupied()) {
+                int dr = square1.row() - square0.row();
+                int dc = square1.column() - square0.column();
+                int gcd = gcd(dr, Math.abs(dc));
+                dr /= gcd;
+                dc /= gcd;
+                int r2 = square1.row() + dr;
+                int c2 = square1.column() + dc;
+                while (r2 < board.width() && c2 >= 0 && c2 < board.width()){
+                    if (board.isOccupied(r2, c2)) {
+                        return true;
                     }
+                    r2 += dr;
+                    c2 += dc;
                 }
             }
         }
@@ -51,8 +42,8 @@ class StraightLine implements Rule {
     }
 
     private static int gcd(int x, int y) {
-        if (x == 0) {
-            return y;
+        if (y == 0) {
+            return x;
         } else {
             return gcd(y, x % y);
         }

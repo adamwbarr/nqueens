@@ -24,23 +24,17 @@ class BruteForce implements Solver {
     @Override
     public BoardSet solveFor(int width) {
         Result result = new Result();
-        solve(Board.of(width), 0, 0, result);
+        solve(Board.of(width), 0, result);
         result.logProgress();
         return BoardSet.of(result.solutions);
     }
 
-    private void solve(Board board, int row, int column, Result result) {
-        if (row == board.width()) {
+    private void solve(Board board, int index, Result result) {
+        if (index == board.squares()) {
             result.add(board);
         } else {
-            int nextRow = row;
-            int nextColumn = column + 1;
-            if (nextColumn == board.width()) {
-                nextColumn = 0;
-                nextRow++;
-            }
-            solve(board, nextRow, nextColumn, result);
-            solve(board.occupy(row, column), nextRow, nextColumn, result);
+            solve(board, index + 1, result);
+            solve(board.occupy(index), index + 1, result);
         }
     }
 
@@ -66,7 +60,7 @@ class BruteForce implements Solver {
                 "Took %dms to test %d boards (%.3fus each), of which %d are solutions)",
                 duration,
                 tested,
-                1000 * duration / (double)tested,
+                1000 * duration / (double) tested,
                 solutions.size()
             ));
         }

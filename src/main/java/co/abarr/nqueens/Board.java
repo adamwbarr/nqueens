@@ -144,7 +144,7 @@ public class Board {
     public class Square {
         private final int index;
 
-        public Square(int index) {
+        private Square(int index) {
             this.index = index;
         }
 
@@ -167,6 +167,13 @@ public class Board {
          */
         public int column() {
             return index % width;
+        }
+
+        /**
+         * The board that this square is on.
+         */
+        public Board board() {
+            return Board.this;
         }
 
         /**
