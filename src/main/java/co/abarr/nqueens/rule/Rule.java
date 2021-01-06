@@ -103,7 +103,7 @@ public interface Rule {
      * </pre>
      */
     Rule N_QUEENS = union(
-        board -> board.occupied() == board.size(),
+        board -> board.occupied() == board.width(),
         HORIZONTAL.negate(),
         VERTICAL.negate(),
         DIAGONAL_LEFT.negate(),

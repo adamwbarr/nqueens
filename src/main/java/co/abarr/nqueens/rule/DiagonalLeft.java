@@ -8,11 +8,11 @@ import co.abarr.nqueens.Board;
 class DiagonalLeft implements Rule {
     @Override
     public boolean isSatisfiedBy(Board board) {
-        int size = board.size();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        int width = board.width();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < width; j++) {
                 if (board.isOccupied(i, j)) {
-                    for (int offset = 1; offset < size - i; offset++) {
+                    for (int offset = 1; offset < width - i; offset++) {
                         int iOffset = i + offset;
                         int jOffset = j - offset;
                         if (jOffset < 0) {

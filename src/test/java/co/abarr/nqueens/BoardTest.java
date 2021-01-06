@@ -13,18 +13,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class BoardTest {
     @ParameterizedTest
     @ValueSource(ints = {0, -1, -213})
-    void of_InvalidSize_ShouldThrowException(int size) {
-        assertThatThrownBy(() -> Board.of(size)).isInstanceOf(IllegalArgumentException.class);
+    void of_InvalidWidth_ShouldThrowException(int width) {
+        assertThatThrownBy(() -> Board.of(width)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void toString_ForEmptyBoardOfSize2_ShouldBeCorrect() {
+    void toString_ForEmptyBoardOfWidth2_ShouldBeCorrect() {
         String toString = Board.of(2).toString();
         assertThat(toString).isEqualTo("..\n..");
     }
 
     @Test
-    void toString_ForEmptyBoardOfSize3_ShouldBeCorrect() {
+    void toString_ForEmptyBoardOfWidth3_ShouldBeCorrect() {
         String toString = Board.of(3).toString();
         assertThat(toString).isEqualTo("...\n...\n...");
     }
@@ -117,9 +117,9 @@ class BoardTest {
     }
 
     @Test
-    void size_OfSimpleBoard_ShouldBeCorrect() {
+    void width_OfSimpleBoard_ShouldBeCorrect() {
         Board board = Board.of(8);
-        assertThat(board.size()).isEqualTo(8);
+        assertThat(board.width()).isEqualTo(8);
     }
 
     @Test

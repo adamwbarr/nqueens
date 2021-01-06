@@ -12,20 +12,20 @@ import java.util.Objects;
  */
 public class Board {
     private final BigInteger squares;
-    private final int size;
+    private final int width;
 
-    private Board(BigInteger squares, int size) {
+    private Board(BigInteger squares, int width) {
         this.squares = squares;
-        this.size = size;
+        this.width = width;
     }
 
     /**
-     * The size of the board - the number of squares per side.
+     * The width of the board - the number of squares per side.
      * <p>
-     * In total the board will contain <code>size * size</code> squares.
+     * In total the board will contain <code>width * width</code> squares.
      */
-    public int size() {
-        return size;
+    public int width() {
+        return width;
     }
 
     /**
@@ -44,7 +44,7 @@ public class Board {
      * or there if there already is a queen occupying that square.
      */
     public Board occupy(int row, int column) {
-        return new Board(squares.setBit(bitIndex(row, column)), size);
+        return new Board(squares.setBit(bitIndex(row, column)), width);
     }
 
     /**
@@ -59,19 +59,19 @@ public class Board {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Board board = (Board) o;
-        return size == board.size && squares.equals(board.squares);
+        return width == board.width && squares.equals(board.squares);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(squares, size);
+        return Objects.hash(squares, width);
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (int row = 0; row < size; row++) {
-            for (int column = 0; column < size; column++) {
+        for (int row = 0; row < width; row++) {
+            for (int column = 0; column < width; column++) {
                 if (isOccupied(row, column)) {
                     builder.append('x');
                 } else {
@@ -86,7 +86,7 @@ public class Board {
 
     private int bitIndex(int row, int column) {
         checkValid(row, column);
-        return row * size + column;
+        return row * width + column;
     }
 
     private void checkValid(int row, int column) {
@@ -95,8 +95,8 @@ public class Board {
     }
 
     private void checkValid(int index) {
-        if (index < 0 || index >= size) {
-            throw new IllegalArgumentException(String.format("Invalid index %d for board of size %d", index, size));
+        if (index < 0 || index >= width) {
+            throw new IllegalArgumentException(String.format("Invalid index %d for board of width %d", index, width));
         }
     }
 
@@ -116,13 +116,13 @@ public class Board {
      * </pre>
      */
     public static Board fromString(String s) {
-        int size = s.substring(0, s.indexOf('\n')).length();
-        Board board = Board.of(size);
+        int width = s.substring(0, s.indexOf('\n')).length();
+        Board board = Board.of(width);
         int row = 0;
         int column = 0;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (column == size) {
+            if (column == width) {
                 if (c != '\n') {
                     throw new IllegalArgumentException(String.format("Unexpected character at index %d in \"%s\"", i, s));
                 } else {
@@ -138,25 +138,25 @@ public class Board {
                 column++;
             }
         }
-        if (row != size - 1) {
+        if (row != width - 1) {
             throw new IllegalArgumentException("Insufficient rows");
         }
         return board;
     }
 
     /**
-     * Creates a new (empty) board of the supplied size.
+     * Creates a new (empty) board of the supplied width.
      * <p>
-     * The size is the number of squares per side, meaning the resulting board
-     * will contain <code>size * size</code> empty squares.
+     * The width is the number of squares per side, meaning the resulting board
+     * will contain <code>width * width</code> empty squares.
      * <p>
      * An exception will be thrown if <code>size</code> is not a positive value.
      */
-    public static Board of(int size) {
-        if (size <= 0) {
-            throw new IllegalArgumentException("Size is not a positive value: " + size);
+    public static Board of(int width) {
+        if (width <= 0) {
+            throw new IllegalArgumentException("Invalid width: " + width);
         } else {
-            return new Board(BigInteger.ZERO, size);
+            return new Board(BigInteger.ZERO, width);
         }
     }
 }
