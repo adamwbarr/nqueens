@@ -90,64 +90,58 @@ class BoardTest {
         assertThatThrownBy(() -> board.occupy(0, column)).isInstanceOf(IllegalArgumentException.class);
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 8, 10})
+    void isOccupied_OfInvalidRow_ShouldThrowException(int row) {
+        Board board = Board.of(8).occupy(4, 5);
+        assertThatThrownBy(() -> board.isOccupied(row, 0)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 8, 10})
+    void isOccupied_OfInvalidColumn_ShouldThrowException(int column) {
+        Board board = Board.of(8).occupy(4, 5);
+        assertThatThrownBy(() -> board.isOccupied(0, column)).isInstanceOf(IllegalArgumentException.class);
+    }
+
     @Test
-    void isConflicting_OfEmptyBoard_ShouldBeFalse() {
+    void isOccupied_OfUnoccupiedSquare_ShouldBeFalse() {
+        Board board = Board.of(8).occupy(4, 5);
+        assertThat(board.isOccupied(0, 0)).isFalse();
+    }
+
+    @Test
+    void isOccupied_OfOccupiedSquare_ShouldBeTrue() {
+        Board board = Board.of(8).occupy(4, 5);
+        assertThat(board.isOccupied(4, 5)).isTrue();
+    }
+
+    @Test
+    void size_OfSimpleBoard_ShouldBeCorrect() {
         Board board = Board.of(8);
-        assertThat(board.isConflicting()).isFalse();
+        assertThat(board.size()).isEqualTo(8);
     }
 
     @Test
-    void isConflicting_OfHorizontalConflict_ShouldBeTrue() {
-        Board board = Board.fromString(
-            "x..x\n" +
-            "....\n" +
-            "....\n" +
-            "...."
-        );
-        assertThat(board.isConflicting()).isTrue();
+    void occupied_OfEmptyBoard_ShouldBeZero() {
+        Board board = Board.of(8);
+        assertThat(board.occupied()).isEqualTo(0);
     }
 
     @Test
-    void isConflicting_OfVerticalConflict_ShouldBeTrue() {
-        Board board = Board.fromString(
-            "...x\n" +
-            "....\n" +
-            "....\n" +
-            "...x"
-        );
-        assertThat(board.isConflicting()).isTrue();
+    void occupied_OfBoardWithSingleQueen_ShouldBeOne() {
+        Board board = Board.of(8).occupy(4, 4);
+        assertThat(board.occupied()).isEqualTo(1);
     }
 
     @Test
-    void isConflicting_OfDiagonalalLeftConflict_ShouldBeTrue() {
+    void occupied_OfBoardWithMultipleQueens_ShouldBeCorrect() {
         Board board = Board.fromString(
-            "x...\n" +
-            "....\n" +
-            "....\n" +
-            "...x"
-        );
-        assertThat(board.isConflicting()).isTrue();
-    }
-
-    @Test
-    void isConflicting_OfDiagonalalRightConflict_ShouldBeTrue() {
-        Board board = Board.fromString(
-            "...x\n" +
-            "....\n" +
-            "....\n" +
-            "x..."
-        );
-        assertThat(board.isConflicting()).isTrue();
-    }
-
-    @Test
-    void isConflicting_OfValidBoard_ShouldBeFalse() {
-        Board board = Board.fromString(
+            "..x.\n" +
             ".x..\n" +
-            "...x\n" +
-            "x...\n" +
-            "..x."
+            "..x.\n" +
+            "x..x"
         );
-        assertThat(board.isConflicting()).isFalse();
+        assertThat(board.occupied()).isEqualTo(5);
     }
 }

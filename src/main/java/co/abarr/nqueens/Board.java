@@ -20,55 +20,21 @@ public class Board {
     }
 
     /**
-     * Whether this is a conflicting board.
+     * The size of the board - the number of squares per side.
      * <p>
-     * On a conflicting board at least one queen is in a position to take
-     * another (either horizontally, vertically, or diagonally).
+     * In total the board will contain <code>size * size</code> squares.
      */
-    public boolean isConflicting() {
-        for (int row = 0; row < size; row++) {
-            for (int column = 0; column < size; column++) {
-                if (isOccupied(row, column)) {
-                    if (isHorizontalConflict(row, column)) {
-                        return true;
-                    }
-                    if (isVerticalConflict(row, column)) {
-                        return true;
-                    }
-                    if (isDiagonalLeftConflict(row, column)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+    public int size() {
+        return size;
     }
 
-    private boolean isHorizontalConflict(int row, int column) {
-        for (int i = column + 1; i < size; i++) {
-            if (isOccupied(row, i)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isVerticalConflict(int row, int column) {
-        for (int i = row + 1; i < size; i++) {
-            if (isOccupied(i, column)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isDiagonalLeftConflict(int row, int column) {
-        for (int i = row + 1; i < size; i++) {
-            if (isOccupied(i, column)) {
-                return true;
-            }
-        }
-        return false;
+    /**
+     * Whether a square on the board is occupied by a queen.
+     * <p>
+     * An exception will be thrown if a row or column index is out of bounds.
+     */
+    public boolean isOccupied(int row, int column) {
+        return squares.testBit(bitIndex(row, column));
     }
 
     /**
@@ -78,15 +44,14 @@ public class Board {
      * or there if there already is a queen occupying that square.
      */
     public Board occupy(int row, int column) {
-        checkValid(row);
-        checkValid(column);
         return new Board(squares.setBit(bitIndex(row, column)), size);
     }
 
-    private void checkValid(int index) {
-        if (index < 0 || index >= size) {
-            throw new IllegalArgumentException(String.format("Invalid index %d for board of size %d", index, size));
-        }
+    /**
+     * The number of occupied squares on the board.
+     */
+    public int occupied() {
+        return squares.bitCount();
     }
 
     @Override
@@ -119,12 +84,20 @@ public class Board {
         return builder.toString();
     }
 
-    private boolean isOccupied(int row, int column) {
-        return squares.testBit(bitIndex(row, column));
+    private int bitIndex(int row, int column) {
+        checkValid(row, column);
+        return row * size + column;
     }
 
-    private int bitIndex(int row, int column) {
-        return row * size + column;
+    private void checkValid(int row, int column) {
+        checkValid(row);
+        checkValid(column);
+    }
+
+    private void checkValid(int index) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException(String.format("Invalid index %d for board of size %d", index, size));
+        }
     }
 
     /**
