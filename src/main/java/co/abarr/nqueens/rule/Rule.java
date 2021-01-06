@@ -88,7 +88,28 @@ public interface Rule {
     }
 
     /**
-     * A rule satisfied when the basic n-queens property is true.
+     * A rule satisfied when no queen may attack another.
+     * <p>
+     * For an n*n board all queens must be arranged in such a way that no queen
+     * can attack any other (either horizontally, vertically or diagonally).
+     * <p>
+     * For example:
+     * <pre>
+     *      .x..
+     *      ...x
+     *      ....
+     *      ....
+     * </pre>
+     */
+    Rule NO_CONFLICTS = union(
+        HORIZONTAL.negate(),
+        VERTICAL.negate(),
+        DIAGONAL_LEFT.negate(),
+        DIAGONAL_RIGHT.negate()
+    );
+
+    /**
+     * A rule satisfied when the full n-queens property is true.
      * <p>
      * For an n*n board there must be n queens arranged in such a way that no
      * queen can attack any other (either horizontally, vertically or
@@ -102,11 +123,5 @@ public interface Rule {
      *      ..x.
      * </pre>
      */
-    Rule N_QUEENS = union(
-        board -> board.occupied() == board.width(),
-        HORIZONTAL.negate(),
-        VERTICAL.negate(),
-        DIAGONAL_LEFT.negate(),
-        DIAGONAL_RIGHT.negate()
-    );
+    Rule N_QUEENS = union(board -> board.occupied() == board.width(), NO_CONFLICTS);
 }

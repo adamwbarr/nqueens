@@ -15,9 +15,25 @@ public interface Solver {
     BoardSet solveFor(int width);
 
     /**
+     * Wraps this solver in one that logs a simple summary of what happened.
+     */
+    default Solver logging() {
+        return new Logging(this);
+    }
+
+    /**
      * A solver that uses brute force to find solutions to an arbitrary rule.
+     * <p>
+     * This is extremely slow for boards wider than 5 or 6.
      */
     static Solver bruteForce(Rule rule) {
         return new BruteForce(rule);
     }
+
+    /**
+     * A faster solver specifically for the N-queens problem.
+     * <p>
+     * On my laptop this takes under 1s for boards of width 10 or less.
+     */
+    Solver N_QUEENS = new Backtracking();
 }

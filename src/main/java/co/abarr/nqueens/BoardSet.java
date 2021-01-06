@@ -1,5 +1,7 @@
 package co.abarr.nqueens;
 
+import co.abarr.nqueens.rule.Rule;
+
 import java.util.*;
 
 /**
@@ -33,9 +35,20 @@ public class BoardSet extends AbstractSet<Board> {
     }
 
     /**
+     * Filters down to only those boards that satisfy the supplied rule.
+     * <p>
+     * This is an immutable operation - it returns a new object and does not
+     * modify this one.
+     */
+    public BoardSet satisfying(Rule rule) {
+        return null;
+    }
+
+    /**
      * Adds a board to the set.
      * <p>
-     * This is an immutable operation - ie it returns a new object.
+     * This is an immutable operation - it returns a new object and does not
+     * modify this one.
      */
     public BoardSet plus(Board board) {
         return plus(Collections.singleton(board));
@@ -44,7 +57,8 @@ public class BoardSet extends AbstractSet<Board> {
     /**
      * Adds boards to the set.
      * <p>
-     * This is an immutable operation - ie it returns a new object.
+     * This is an immutable operation - it returns a new object and does not
+     * modify this one.
      */
     public BoardSet plus(Board... boards) {
         return plus(Arrays.asList(boards));
@@ -53,7 +67,8 @@ public class BoardSet extends AbstractSet<Board> {
     /**
      * Adds boards to the set.
      * <p>
-     * This is an immutable operation - ie it returns a new object.
+     * This is an immutable operation - it returns a new object and does not
+     * modify this one.
      */
     public BoardSet plus(Iterable<? extends Board> boards) {
         if (this.boards.isEmpty()) {
