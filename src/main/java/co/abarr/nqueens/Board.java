@@ -139,7 +139,7 @@ public class Board {
             }
         }
         if (row != width - 1) {
-            throw new IllegalArgumentException("Insufficient rows");
+            throw new IllegalArgumentException("Insufficient rows in \"" + s + "\"");
         }
         return board;
     }

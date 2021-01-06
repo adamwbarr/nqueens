@@ -1,26 +1,34 @@
 package co.abarr.nqueens.co.abarr.nqueens.solver;
 
+import co.abarr.nqueens.Board;
 import co.abarr.nqueens.BoardSet;
 import co.abarr.nqueens.rule.Rule;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by adam on 06/01/2021.
  */
 class BruteForceTest {
     @Test
-    void solveFor_NQueens_ShouldReturnCorrectNumberOfSolutionsForSize4() {
+    void solveFor_NQueens_ShouldReturnCorrectSolutionsForSize4() {
         Solver solver = new BruteForce(Rule.N_QUEENS);
         BoardSet boards = solver.solveFor(4);
-        assertThat(boards).hasSize(2);
+        assertThat(boards).containsExactly(
+            Board.fromString(
+                ".x..\n" +
+                "...x\n" +
+                "x...\n" +
+                "..x."
+            ),
+            Board.fromString(
+                "..x.\n" +
+                "x...\n" +
+                "...x\n" +
+                ".x.."
+            )
+        );
     }
 
-    @Test
-    void solveFor_NQueens_ShouldReturnCorrectNumberOfSolutionsForSize5() {
-        Solver solver = new BruteForce(Rule.N_QUEENS);
-        BoardSet boards = solver.solveFor(5);
-        assertThat(boards).hasSize(10);
-    }
 }

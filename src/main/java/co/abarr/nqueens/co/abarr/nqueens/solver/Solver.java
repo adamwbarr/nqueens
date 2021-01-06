@@ -10,9 +10,9 @@ import co.abarr.nqueens.rule.Rule;
  */
 public interface Solver {
     /**
-     * Finds all boards of given size solving the problem.
+     * Finds all boards of given width that solve the problem.
      */
-    BoardSet solveFor(int size);
+    BoardSet solveFor(int width);
 
     /**
      * A solver that uses brute force to find solutions to an arbitrary rule.

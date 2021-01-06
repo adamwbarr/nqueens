@@ -98,8 +98,10 @@ public class BoardSet extends AbstractSet<Board> {
      * A set containing no boards.
      */
     public static BoardSet empty() {
-        return of();
+        return EMPTY;
     }
+
+    private static final BoardSet EMPTY = new BoardSet(Collections.emptySet());
 
     /**
      * A set containing the supplied boards.
