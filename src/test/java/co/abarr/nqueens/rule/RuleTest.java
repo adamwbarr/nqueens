@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by adam on 06/01/2021.
  */
-public class RuleTest {
+class RuleTest {
     @Test
     void noConflicts_OnEmptyBoard_ShouldBeTrue() {
         Board board = Board.of(8);
