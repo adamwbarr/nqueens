@@ -1,4 +1,4 @@
-package co.abarr.nqueens.co.abarr.nqueens.solver;
+package co.abarr.nqueens.solver;
 
 import co.abarr.nqueens.BoardSet;
 import co.abarr.nqueens.rule.Rule;
