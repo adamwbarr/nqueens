@@ -124,4 +124,19 @@ public interface Rule {
      * </pre>
      */
     Rule N_QUEENS = union(board -> board.occupied() == board.width(), NO_CONFLICTS);
+
+    /**
+     * A rule satisfied when there are 3 queens in a line at any angle.
+     * <p>
+     * "Queens on A1, C2 and E3, despite not attacking each other, form a straight
+     * line at some angle". eg:
+     * <pre>
+     *     x....
+     *     .....
+     *     .x...
+     *     .....
+     *     ..x..
+     * </pre>
+     */
+    Rule STRAIGHT_LINE = new StraightLine();
 }

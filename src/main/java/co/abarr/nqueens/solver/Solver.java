@@ -22,6 +22,13 @@ public interface Solver {
     }
 
     /**
+     * Filters the solution down to only those satisfying an additional rule.
+     */
+    default Solver satisfying(Rule rule) {
+        return width -> solveFor(width).satisfying(rule);
+    }
+
+    /**
      * A solver that uses brute force to find solutions to an arbitrary rule.
      * <p>
      * This is extremely slow for boards wider than 5 or 6.
@@ -36,4 +43,9 @@ public interface Solver {
      * On my laptop this takes under 1s for boards of width 10 or less.
      */
     Solver N_QUEENS = new Backtracking();
+
+    /**
+     * N-queens solutions with the additional constraint of no straight lines.
+     */
+    Solver N_QUEENS_PLUS = N_QUEENS.satisfying(Rule.STRAIGHT_LINE.negate());
 }
