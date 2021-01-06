@@ -19,6 +19,24 @@ public class Board {
         this.size = size;
     }
 
+    /**
+     * Puts a queen on the square at the supplied position.
+     * <p>
+     * An exception will be thrown if either index is out of bounds, or there
+     * if there already is a queen at that position.
+     */
+    public Board put(int row, int column) {
+        checkValid(row);
+        checkValid(column);
+        return new Board(squares.setBit(bitIndex(row, column)), size);
+    }
+
+    private void checkValid(int index) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException(String.format("Invalid index %d for board of size %d", index, size));
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,7 +68,11 @@ public class Board {
     }
 
     private boolean isSet(int row, int column) {
-        return squares.testBit(row * size + column);
+        return squares.testBit(bitIndex(row, column));
+    }
+
+    private int bitIndex(int row, int column) {
+        return row * size + column;
     }
 
     /**
