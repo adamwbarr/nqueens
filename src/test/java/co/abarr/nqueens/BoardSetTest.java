@@ -27,4 +27,27 @@ class BoardSetTest {
         );
         assertThat(set).hasSize(2);
     }
+
+    @Test
+    void plus_WithEmptySet_ShouldReturnSelf() {
+        BoardSet set1 = BoardSet.of(Board.of(8));
+        BoardSet set2 = BoardSet.empty();
+        assertThat(set1.plus(set2)).isEqualTo(set1);
+    }
+
+    @Test
+    void plus_OnEmptySet_ShouldReturnParameter() {
+        BoardSet set1 = BoardSet.empty();
+        BoardSet set2 = BoardSet.of(Board.of(8));
+        assertThat(set1.plus(set2)).isEqualTo(set2);
+    }
+
+    @Test
+    void plus_NonEmptySets_ShouldReturnCombinedSet() {
+        Board board1 = Board.of(8).occupy(0, 0);
+        Board board2 = Board.of(8).occupy(1, 1);
+        BoardSet set1 = BoardSet.of(board1);
+        BoardSet set2 = BoardSet.of(board2);
+        assertThat(set1.plus(set2)).containsExactly(board1, board2);
+    }
 }

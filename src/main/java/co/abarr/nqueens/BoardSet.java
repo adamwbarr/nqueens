@@ -33,6 +33,68 @@ public class BoardSet extends AbstractSet<Board> {
     }
 
     /**
+     * Adds a board to the set.
+     * <p>
+     * This is an immutable operation - ie it returns a new object.
+     */
+    public BoardSet plus(Board board) {
+        return plus(Collections.singleton(board));
+    }
+
+    /**
+     * Adds boards to the set.
+     * <p>
+     * This is an immutable operation - ie it returns a new object.
+     */
+    public BoardSet plus(Board... boards) {
+        return plus(Arrays.asList(boards));
+    }
+
+    /**
+     * Adds boards to the set.
+     * <p>
+     * This is an immutable operation - ie it returns a new object.
+     */
+    public BoardSet plus(Iterable<? extends Board> boards) {
+        if (this.boards.isEmpty()) {
+            return BoardSet.of(boards);
+        } else {
+            Iterator<? extends Board> iterator = boards.iterator();
+            if (iterator.hasNext()) {
+                Set<Board> merged = new HashSet<>(this.boards);
+                while (iterator.hasNext()) {
+                    merged.add(iterator.next());
+                }
+                return new BoardSet(merged);
+            } else {
+                return this;
+            }
+        }
+    }
+
+    /**
+     * This method is not supported.
+     *
+     * @deprecated Use immutable operation {{@link #plus(Board)}} instead.
+     */
+    @Override
+    @Deprecated
+    public boolean add(Board board) {
+        return super.add(board);
+    }
+
+    /**
+     * This method is not supported.
+     *
+     * @deprecated Use immutable operation {{@link #plus(Iterable)}} instead.
+     */
+    @Override
+    @Deprecated
+    public boolean addAll(Collection<? extends Board> c) {
+        return super.addAll(c);
+    }
+
+    /**
      * A set containing no boards.
      */
     public static BoardSet empty() {
