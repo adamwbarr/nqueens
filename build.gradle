@@ -5,6 +5,8 @@ plugins {
 group "co.abarr"
 version "1.0-SNAPSHOT"
 
+sourceCompatibility = JavaVersion.VERSION_14
+
 repositories {
     mavenCentral()
 }
