@@ -21,7 +21,7 @@ dependencies {
 }
 
 application {
-    mainClass = "co.abarr.nqueens.Main"
+    mainClass = "co.abarr.nqueens.main.Main"
 }
 
 test {

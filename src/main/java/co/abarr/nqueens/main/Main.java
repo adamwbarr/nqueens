@@ -1,5 +1,7 @@
-package co.abarr.nqueens;
+package co.abarr.nqueens.main;
 
+import co.abarr.nqueens.Board;
+import co.abarr.nqueens.BoardSet;
 import co.abarr.nqueens.solver.Solver;
 
 /**
