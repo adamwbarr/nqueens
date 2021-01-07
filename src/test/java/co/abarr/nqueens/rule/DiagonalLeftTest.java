@@ -56,6 +56,17 @@ class DiagonalLeftTest {
     }
 
     @Test
+    void isSatisfiedBy_BoardWithSingleQueenOnBottomEdge_ShouldBeFalse() {
+        Board board = Board.fromString(
+            "....\n" +
+            "....\n" +
+            "....\n" +
+            ".x.."
+        );
+        assertThat(rule.isSatisfiedBy(board)).isFalse();
+    }
+
+    @Test
     void isSatisfiedBy_BoardWithNoConflict_ShouldBeFalse() {
         Board board = Board.fromString(
             "x...\n" +

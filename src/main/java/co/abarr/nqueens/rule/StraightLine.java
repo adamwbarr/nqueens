@@ -8,8 +8,7 @@ import co.abarr.nqueens.Board;
 class StraightLine implements Rule {
     @Override
     public boolean isSatisfiedBy(Board board) {
-        for (int i = 0; i < board.squares(); i++) {
-            Board.Square square = board.square(i);
+        for (Board.Square square : board) {
             if (square.isOccupied() && isLineFrom(square)) {
                 return true;
             }
@@ -19,8 +18,8 @@ class StraightLine implements Rule {
 
     private boolean isLineFrom(Board.Square square0) {
         Board board = square0.board();
-        for (int i1 = square0.index() + 1; i1 < board.squares(); i1++) {
-            Board.Square square1 = board.square(i1);
+        for (int i = square0.index() + 1; i < board.squares(); i++) {
+            Board.Square square1 = board.square(i);
             if (square1.isOccupied()) {
                 int dr = square1.row() - square0.row();
                 int dc = square1.column() - square0.column();

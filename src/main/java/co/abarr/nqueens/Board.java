@@ -1,6 +1,8 @@
 package co.abarr.nqueens;
 
 import java.math.BigInteger;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -11,7 +13,9 @@ import java.util.Objects;
  * <p>
  * Created by adam on 05/01/2021.
  */
-public class Board {
+public class Board implements Iterable<Board.Square> {
+    private static final char UNOCCUPIED = '.';
+    private static final char OCCUPIED = 'x';
     private final BigInteger squares;
     private final int width;
 
@@ -41,6 +45,34 @@ public class Board {
      */
     public int occupied() {
         return squares.bitCount();
+    }
+
+    /**
+     * An iterator over all squares on this board.
+     * <p>
+     * Squares are iterated in ascending index order.
+     */
+    @Override
+    public Iterator<Square> iterator() {
+        return new SquareIterator();
+    }
+
+    private class SquareIterator implements Iterator<Square> {
+        private int next = 0;
+
+        @Override
+        public boolean hasNext() {
+            return next < squares();
+        }
+
+        @Override
+        public Square next() {
+            if (hasNext()) {
+                return square(next++);
+            } else {
+                throw new NoSuchElementException();
+            }
+        }
     }
 
     /**
@@ -134,9 +166,9 @@ public class Board {
         for (int row = 0; row < width; row++) {
             for (int column = 0; column < width; column++) {
                 if (square(row, column).isOccupied()) {
-                    builder.append('x');
+                    builder.append(OCCUPIED);
                 } else {
-                    builder.append('.');
+                    builder.append(UNOCCUPIED);
                 }
             }
             builder.append("\n");
@@ -202,7 +234,7 @@ public class Board {
 
         @Override
         public String toString() {
-            return String.format("(%d, %d)", row(), column());
+            return String.format("(%d,%d)=[%s]", row(), column(), isOccupied() ? OCCUPIED : UNOCCUPIED);
         }
     }
 
@@ -236,9 +268,9 @@ public class Board {
                     column = 0;
                 }
             } else {
-                if (c == 'x') {
+                if (c == OCCUPIED) {
                     board = board.square(row, column).occupy();
-                } else if (c != '.') {
+                } else if (c != UNOCCUPIED) {
                     throw new IllegalArgumentException(String.format("Unexpected character at index %d in \"%s\"", i, s));
                 }
                 column++;

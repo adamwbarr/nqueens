@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import static org.assertj.core.api.Assertions.*;
 
 /**
@@ -187,5 +190,44 @@ class BoardTest {
     void square_ForColumnOnSubsequentRow_ShouldHaveCorrectIndex() {
         Board board = Board.of(8);
         assertThat(board.square(1, 2).index()).isEqualTo(10);
+    }
+
+    @Test
+    void iterator_OfSimpleBoard_ShouldReturnSquareZeroFirst() {
+        Board board = Board.of(2);
+        Iterator<Board.Square> iterator = board.iterator();
+        assertThat(iterator.next().index()).isEqualTo(0);
+    }
+
+    @Test
+    void iterator_OfSimpleBoard_ShouldIterateInAscendingOrder() {
+        Board board = Board.of(2);
+        Iterator<Board.Square> iterator = board.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        assertThat(iterator.next().index()).isEqualTo(3);
+    }
+
+    @Test
+    void iterator_OfSimpleBoard_ShouldIterateCorrectNumberOfSquares() {
+        Board board = Board.of(2);
+        Iterator<Board.Square> iterator = board.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        assertThat(iterator.hasNext()).isFalse();
+    }
+
+    @Test
+    void iterator_OfSimpleBoard_ShouldThrowExceptionWhenNoMoreSquares() {
+        Board board = Board.of(2);
+        Iterator<Board.Square> iterator = board.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        assertThatThrownBy(iterator::next).isInstanceOf(NoSuchElementException.class);
     }
 }

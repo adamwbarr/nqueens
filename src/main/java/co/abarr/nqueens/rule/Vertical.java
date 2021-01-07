@@ -8,13 +8,12 @@ import co.abarr.nqueens.Board;
 class Vertical implements Rule {
     @Override
     public boolean isSatisfiedBy(Board board) {
-        for (int i = 0; i < board.width(); i++) {
-            for (int j = 0; j < board.width(); j++) {
-                if (board.isOccupied(i, j)) {
-                    for (int k = i + 1; k < board.width(); k++) {
-                        if (board.isOccupied(k, j)) {
-                            return true;
-                        }
+        for (Board.Square square : board) {
+            if (square.isOccupied()) {
+                int column = square.column();
+                for (int row = square.row() + 1; row < board.width(); row++) {
+                    if (board.isOccupied(row, column)) {
+                        return true;
                     }
                 }
             }
