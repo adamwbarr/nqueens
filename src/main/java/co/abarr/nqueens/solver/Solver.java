@@ -15,37 +15,41 @@ public interface Solver {
     BoardSet solveFor(int width);
 
     /**
-     * Wraps this solver in one that logs a simple summary of what happened.
+     * Logs a simple summary of what happened.
      */
     default Solver logging() {
         return new Logging(this);
     }
 
     /**
-     * Filters the solution down to only those satisfying an additional rule.
+     * Excludes solutions that don't satisfy the supplied rule.
      */
-    default Solver andSatisfying(Rule rule) {
-        return width -> solveFor(width).satisfying(rule);
+    default Solver filter(Rule rule) {
+        return width -> solveFor(width).filter(rule);
     }
 
     /**
      * A solver that uses brute force to find solutions to an arbitrary rule.
      * <p>
-     * This is extremely slow for boards wider than 5 or 6.
+     * Note - this is extremely slow for boards wider than 5 or 6.
      */
     static Solver bruteForce(Rule rule) {
         return new BruteForce(rule);
     }
 
     /**
-     * A faster solver specifically for the N-queens problem.
+     * A solver for the n-queens problem.
      * <p>
-     * On my laptop this takes under 1s for boards of width 10 or less.
+     * This is substantially faster than brute force - on my laptop it takes
+     * <1s for boards of width 10 or less.
      */
     Solver N_QUEENS = new Backtracking();
 
     /**
-     * N-queens solutions with the additional constraint of no straight lines.
+     * A solver for the extended n-queens problem.
+     * <p>
+     * This is defined as the n-queens problem, with the additional constraint
+     * that no three queens are in a straight line at any angle.
      */
-    Solver N_QUEENS_EXTENDED = N_QUEENS.andSatisfying(Rule.STRAIGHT_LINES.negate());
+    Solver N_QUEENS_EXTENDED = N_QUEENS.filter(Rule.STRAIGHT_LINES.negate());
 }

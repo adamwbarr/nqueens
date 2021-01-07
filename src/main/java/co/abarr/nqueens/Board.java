@@ -6,7 +6,8 @@ import java.util.Objects;
 /**
  * An immutable square chessboard.
  * <p>
- * A board may or may not have a single queen on each square.
+ * Squares on a board may be individually referenced either by row and column
+ * or by (row-first) index. Each square may by occupied by a single queen.*
  * <p>
  * Created by adam on 05/01/2021.
  */
@@ -45,7 +46,15 @@ public class Board {
     /**
      * The square at the supplied index.
      * <p>
-     * An exception will be thrown if the index is out of bounds.
+     * Indices are row-major, so for a 3*3 board the index of each square is as
+     * follows:
+     * <pre>
+     *     0 1 2
+     *     3 4 5
+     *     6 7 8
+     * </pre>
+     * <p>
+     * An exception will be thrown if the supplied index is out of bounds.
      */
     public Square square(int index) {
         if (index < 0 || index >= squares()) {
@@ -82,8 +91,7 @@ public class Board {
     /**
      * Occupies the square at the supplied position with a queen.
      * <p>
-     * An exception will be thrown the index is out of bounds, or there if
-     * there already is a queen occupying that square.
+     * An exception will be thrown the index is out of bounds.
      */
     public Board occupy(int index) {
         return square(index).occupy();
@@ -92,7 +100,7 @@ public class Board {
     /**
      * Whether a square on the board is occupied by a queen.
      * <p>
-     * An exception will be thrown if a row or column index is out of bounds.
+     * An exception will be thrown if either index is out of bounds.
      */
     public boolean isOccupied(int row, int column) {
         return square(row, column).isOccupied();
@@ -101,8 +109,7 @@ public class Board {
     /**
      * Occupies the square at the supplied position with a queen.
      * <p>
-     * An exception will be thrown if a row or column index is out of bounds,
-     * or there if there already is a queen occupying that square.
+     * An exception will be thrown if either index is out of bounds.
      */
     public Board occupy(int row, int column) {
         return square(row, column).occupy();
@@ -202,9 +209,9 @@ public class Board {
     /**
      * Constructs a board from a string.
      * <p>
-     * A valid string is one as produced by the {@link #toString()} method,
-     * with a line per row, within which each square is represented by a single
-     * character: either 'x' if that square is occupied, or '.' otherwise.
+     * A valid string is one as produced by the {@link #toString()} method:
+     * one line per row, within which each square is represented by a single
+     * character; either 'x' if that square is occupied, or '.' otherwise.
      * <p>
      * For example:
      * <pre>
@@ -237,7 +244,7 @@ public class Board {
                 column++;
             }
         }
-        if (row != width - 1) {
+        if (row < width - 1) {
             throw new IllegalArgumentException("Insufficient rows in \"" + s + "\"");
         }
         return board;
@@ -247,9 +254,9 @@ public class Board {
      * Creates a new (empty) board of the supplied width.
      * <p>
      * The width is the number of squares per side, meaning the resulting board
-     * will contain <code>width * width</code> empty squares.
+     * will contain <code>width * width</code> squares in total.
      * <p>
-     * An exception will be thrown if <code>size</code> is not a positive value.
+     * An exception will be thrown if the width is not a positive value.
      */
     public static Board of(int width) {
         if (width <= 0) {

@@ -75,6 +75,16 @@ class BoardTest {
         assertThatThrownBy(() -> Board.fromString(invalid));
     }
 
+    @Test
+    void fromString_OfStringWithTrailingNewLine_ShouldBeParsedCorrectly() {
+        Board board = Board.fromString(
+            "...\n" +
+            "...\n" +
+            "...\n"
+        );
+        assertThat(board).isEqualTo(Board.of(3));
+    }
+
     @ParameterizedTest
     @ValueSource(ints = {-1, 64, 66})
     void square_OfInvalidindex_ShouldThrowException(int index) {

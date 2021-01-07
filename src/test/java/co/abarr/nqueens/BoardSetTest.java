@@ -56,6 +56,6 @@ class BoardSetTest {
     void satisfying_SimpleRule_ShouldReturnMatchingBoardsOnly() {
         BoardSet set = BoardSet.of(Board.of(8), Board.of(9), Board.of(10));
         Rule rule = board -> board.width() > 8;
-        assertThat(set.satisfying(rule)).containsExactly(Board.of(9), Board.of(10));
+        assertThat(set.filter(rule)).containsExactly(Board.of(9), Board.of(10));
     }
 }

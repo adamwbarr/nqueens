@@ -40,7 +40,7 @@ public class BoardSet extends AbstractSet<Board> {
      * This is an immutable operation - it returns a new object and does not
      * modify this one.
      */
-    public BoardSet satisfying(Rule rule) {
+    public BoardSet filter(Rule rule) {
         Set<Board> satisfying = new HashSet<>(size());
         for (Board board : boards) {
             if (rule.isSatisfiedBy(board)) {
