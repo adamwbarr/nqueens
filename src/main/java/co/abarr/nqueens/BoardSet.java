@@ -77,19 +77,15 @@ public class BoardSet extends AbstractSet<Board> {
      * modify this one.
      */
     public BoardSet plus(Iterable<? extends Board> boards) {
-        if (this.boards.isEmpty()) {
-            return BoardSet.of(boards);
-        } else {
-            Iterator<? extends Board> iterator = boards.iterator();
-            if (iterator.hasNext()) {
-                Set<Board> merged = new HashSet<>(this.boards);
-                while (iterator.hasNext()) {
-                    merged.add(iterator.next());
-                }
-                return new BoardSet(merged);
-            } else {
-                return this;
+        Iterator<? extends Board> iterator = boards.iterator();
+        if (iterator.hasNext()) {
+            Set<Board> merged = new HashSet<>(this.boards);
+            while (iterator.hasNext()) {
+                merged.add(Objects.requireNonNull(iterator.next()));
             }
+            return new BoardSet(merged);
+        } else {
+            return this;
         }
     }
 
@@ -128,17 +124,13 @@ public class BoardSet extends AbstractSet<Board> {
      * A set containing the supplied boards.
      */
     public static BoardSet of(Board... boards) {
-        return of(Arrays.asList(boards));
+        return EMPTY.plus(boards);
     }
 
     /**
      * A set containing the supplied boards.
      */
     public static BoardSet of(Iterable<? extends Board> boards) {
-        Set<Board> copy = new HashSet<>();
-        for (Board board : boards) {
-            copy.add(Objects.requireNonNull(board));
-        }
-        return new BoardSet(copy);
+        return EMPTY.plus(boards);
     }
 }

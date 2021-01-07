@@ -53,6 +53,12 @@ class BoardSetTest {
     }
 
     @Test
+    void plus_Null_ShouldThrowAnException() {
+        BoardSet set = BoardSet.of(Board.of(2));
+        assertThatThrownBy(() -> set.plus((Board)null)).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
     void satisfying_SimpleRule_ShouldReturnMatchingBoardsOnly() {
         BoardSet set = BoardSet.of(Board.of(8), Board.of(9), Board.of(10));
         Rule rule = board -> board.width() > 8;

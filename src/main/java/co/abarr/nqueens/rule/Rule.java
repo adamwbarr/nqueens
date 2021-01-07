@@ -7,6 +7,9 @@ import java.util.Arrays;
 /**
  * A functional interface for defining composable rules.
  * <p>
+ * This is the public API of the {@link co.abarr.nqueens.rule} package;
+ * everything else is package-protected.
+ * <p>
  * Created by adam on 06/01/2021.
  */
 public interface Rule {

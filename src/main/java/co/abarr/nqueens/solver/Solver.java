@@ -6,6 +6,9 @@ import co.abarr.nqueens.rule.Rule;
 /**
  * API for defining logic for solving n-queens style problems.
  * <p>
+ * This is the public API of the {@link co.abarr.nqueens.solver} package;
+ * everything else is package-protected.
+ * <p>
  * Created by adam on 06/01/2021.
  */
 public interface Solver {
