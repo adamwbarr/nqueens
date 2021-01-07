@@ -51,5 +51,5 @@ public interface Solver {
      * This is defined as the n-queens problem, with the additional constraint
      * that no three queens are in a straight line at any angle.
      */
-    Solver N_QUEENS_EXTENDED = N_QUEENS.filter(Rule.STRAIGHT_LINES.negate());
+    Solver N_QUEENS_EXTENDED = N_QUEENS.filter(Rule.STRAIGHT_LINES.negated());
 }

@@ -1,18 +1,7 @@
 # N-Queens
 
-This is a Java implementation of a solver for
-the [N-queens](https://en.wikipedia.org/wiki/Eight_queens_puzzle)
-problem.
-
-### Running It
-
-The project is built using Gradle; to compile the code and run all unit tests type:
-
-```shell
-$ ./gradlew test
-```
-
-### Solving The Problem
+This is a Java implementation of a solver for a version of the
+[N-queens](https://en.wikipedia.org/wiki/Eight_queens_puzzle) problem.
 
 The goal of the project is to solve the following problem:
 
@@ -20,19 +9,23 @@ The goal of the project is to solve the following problem:
 > problem). Additionally, please make sure that no three queens are in a straight line at ANY angle,
 > so queens on A1, C2 and E3, despite not attacking each other, form a straight line at some angle.
 
-You can print all solutions to this problem for the `8x8` board like this:
+### Running It
 
-```java
-BoardSet solutions = Solver.N_QUEENS_EXTENDED.solveFor(8);
-for (Board solution : solutions){
-    System.out.println(solution);
-    System.out.println("--------");
-}
+The project is built using Gradle. To compile the code and execute all unit tests run:
+
+```shell
+$ ./gradlew test
 ```
 
-On a 3.1GHz MacBook Pro this takes ~100ms and finds 8 solutions. It starts to become very slow with
-boards larger than `10x10` (`11x11` takes ~30s, `12x12` ~2m30s).
+To find all solutions for an `8x8` board, run:
 
-The code mainly prioritises clarity over speed, so these performance numbers could surely be 
-improved somewhat; also many of the algorithms are parallelizable, which could offer further 
+```shell
+$ ./gradlew run --args="8"
+```
+
+On a 3.1GHz MacBook Pro this takes ~80ms and finds 8 solutions. It starts to become very slow with
+boards larger than `11x11` (`12x12` takes ~10s, `13x13` ~1m30s).
+
+The code mainly prioritises clarity over speed, so these performance numbers could surely be
+improved somewhat. Also, the search algorithm is parallelizable, which should offer further
 speedups.

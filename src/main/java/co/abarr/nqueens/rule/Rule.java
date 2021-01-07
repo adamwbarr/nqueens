@@ -5,7 +5,7 @@ import co.abarr.nqueens.Board;
 import java.util.Arrays;
 
 /**
- * Functional interface for defining pluggable rules.
+ * A functional interface for defining composable rules.
  * <p>
  * Created by adam on 06/01/2021.
  */
@@ -18,7 +18,7 @@ public interface Rule {
     /**
      * Negates this rule.
      */
-    default Rule negate() {
+    default Rule negated() {
         return new Negate(this);
     }
 
@@ -33,7 +33,7 @@ public interface Rule {
     Rule TRUE = board -> true;
 
     /**
-     * A rule satisfied when there is a horizontal conflict on the board.
+     * A rule stating there is a horizontal conflict.
      * <p>
      * For example:
      * <pre>
@@ -45,7 +45,7 @@ public interface Rule {
     Rule HORIZONTAL = new Horizontal();
 
     /**
-     * A rule satisfied when there is a vertical conflict on the board.
+     * A rule stating there is a vertical conflict.
      * <p>
      * For example:
      * <pre>
@@ -57,7 +57,7 @@ public interface Rule {
     Rule VERTICAL = new Vertical();
 
     /**
-     * A rule satisfied when there is a left diagonal conflict on the board.
+     * A rule stating there is a left diagonal conflict.
      * <p>
      * For example:
      * <pre>
@@ -69,7 +69,7 @@ public interface Rule {
     Rule DIAGONAL_LEFT = new DiagonalLeft();
 
     /**
-     * A rule satisfied when there is a right diagonal conflict on the board.
+     * A rule stating there is a right diagonal conflict.
      * <p>
      * For example:
      * <pre>
@@ -81,35 +81,37 @@ public interface Rule {
     Rule DIAGONAL_RIGHT = new DiagonalRight();
 
     /**
-     * The union (logical AND) of the supplied rules.
+     * The union (logical AND) of multiple rules.
      */
     static Rule union(Rule... rules) {
         return new Union(Arrays.asList(rules));
     }
 
     /**
-     * A rule satisfied when no queen may attack another.
+     * A rule stating that no queen may attack another.
      * <p>
      * For an n*n board all queens must be arranged in such a way that no queen
-     * is horizontally, vertically or diagonally in line with any other.
+     * is horizontally, vertically or diagonally in line with any other. This
+     * is effectively the n-queens rule but without requiring there be any
+     * specific number of queens on the board.
      * <p>
      * For example:
      * <pre>
-     *      .x..
-     *      ...x
-     *      ....
-     *      ....
+     *      .x..     or     .x..     or     ....
+     *      ...x            ...x            ....
+     *      ....            x...            ....
+     *      ....            ..x.            ...x
      * </pre>
      */
     Rule NO_CONFLICTS = union(
-        HORIZONTAL.negate(),
-        VERTICAL.negate(),
-        DIAGONAL_LEFT.negate(),
-        DIAGONAL_RIGHT.negate()
+        HORIZONTAL.negated(),
+        VERTICAL.negated(),
+        DIAGONAL_LEFT.negated(),
+        DIAGONAL_RIGHT.negated()
     );
 
     /**
-     * A rule satisfied when the full n-queens property is true.
+     * A rule stating the full n-queens property.
      * <p>
      * For an n*n board there must be exactly n queens, arranged in such a way
      * that no queen can attack any other (either horizontally, vertically or
@@ -126,16 +128,17 @@ public interface Rule {
     Rule N_QUEENS = union(board -> board.occupied() == board.width(), NO_CONFLICTS);
 
     /**
-     * A rule satisfied when there are 3 queens in a line, at any angle.
+     * A rule stating there are 3 queens in a line, at any angle.
      * <p>
-     * "Queens on A1, C2 and E3, despite not attacking each other, form a straight
-     * line at some angle". eg:
+     * For example:
      * <pre>
-     *     x....
-     *     .....
-     *     .x...
-     *     .....
-     *     ..x..
+     *     x....     or     .......
+     *     .....            .......
+     *     .x...            ......x
+     *     .....            ...x...
+     *     ..x..            x......
+     *                      .......
+     *                      .......
      * </pre>
      */
     Rule STRAIGHT_LINES = new StraightLine();
