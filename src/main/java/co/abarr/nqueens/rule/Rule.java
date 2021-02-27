@@ -14,29 +14,12 @@ import java.util.Arrays;
  */
 public interface Rule {
     /**
-     * Whether this rule is satisfied by a particular board.
+     * Finds the number of conflicts on the supplied board.
      */
-    boolean isSatisfiedBy(Board board);
+    int breachesOn(Board board);
 
     /**
-     * Negates this rule.
-     */
-    default Rule negated() {
-        return new Negate(this);
-    }
-
-    /**
-     * A rule that is always satisfied.
-     */
-    Rule FALSE = board -> false;
-
-    /**
-     * A rule that is never satisfied.
-     */
-    Rule TRUE = board -> true;
-
-    /**
-     * A rule stating there is a horizontal conflict.
+     * A rule breached if there is a horizontal conflict.
      * <p>
      * For example:
      * <pre>
@@ -48,7 +31,7 @@ public interface Rule {
     Rule HORIZONTAL = new Horizontal();
 
     /**
-     * A rule stating there is a vertical conflict.
+     * A rule breached if there is a vertical conflict.
      * <p>
      * For example:
      * <pre>
@@ -60,7 +43,7 @@ public interface Rule {
     Rule VERTICAL = new Vertical();
 
     /**
-     * A rule stating there is a left diagonal conflict.
+     * A rule breached if there is a left diagonal conflict.
      * <p>
      * For example:
      * <pre>
@@ -72,7 +55,7 @@ public interface Rule {
     Rule DIAGONAL_LEFT = new DiagonalLeft();
 
     /**
-     * A rule stating there is a right diagonal conflict.
+     * A rule breached if there is a right diagonal conflict.
      * <p>
      * For example:
      * <pre>
@@ -91,7 +74,7 @@ public interface Rule {
     }
 
     /**
-     * A rule stating that no queen may attack another.
+     * A rule breached if any queen may attack another.
      * <p>
      * For an n*n board all queens must be arranged in such a way that no queen
      * is horizontally, vertically or diagonally in line with any other. This
@@ -106,15 +89,15 @@ public interface Rule {
      *      ....            ..x.            ...x
      * </pre>
      */
-    Rule NO_CONFLICTS = union(
-        HORIZONTAL.negated(),
-        VERTICAL.negated(),
-        DIAGONAL_LEFT.negated(),
-        DIAGONAL_RIGHT.negated()
+    Rule ATTACKS = union(
+        HORIZONTAL,
+        VERTICAL,
+        DIAGONAL_LEFT,
+        DIAGONAL_RIGHT
     );
 
     /**
-     * A rule stating the full n-queens property.
+     * A rule breached if the full n-queens property is not true.
      * <p>
      * For an n*n board there must be exactly n queens, arranged in such a way
      * that no queen can attack any other (either horizontally, vertically or
@@ -128,10 +111,10 @@ public interface Rule {
      *      ..x.
      * </pre>
      */
-    Rule N_QUEENS = union(board -> board.occupied() == board.width(), NO_CONFLICTS);
+    Rule N_QUEENS = union(board -> board.occupied() == board.width() ? 0 : 1, ATTACKS);
 
     /**
-     * A rule stating there are 3 queens in a line, at any angle.
+     * A rule breached if there are 3 queens in a line, at any angle.
      * <p>
      * For example:
      * <pre>

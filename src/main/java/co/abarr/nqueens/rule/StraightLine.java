@@ -7,13 +7,14 @@ import co.abarr.nqueens.Board;
  */
 class StraightLine implements Rule {
     @Override
-    public boolean isSatisfiedBy(Board board) {
+    public int breachesOn(Board board) {
+        int breaches = 0;
         for (Board.Square square : board) {
             if (square.isOccupied() && isLineFrom(square)) {
-                return true;
+                breaches++;
             }
         }
-        return false;
+        return breaches;
     }
 
     private boolean isLineFrom(Board.Square square0) {
@@ -28,7 +29,7 @@ class StraightLine implements Rule {
                 dc /= gcd;
                 int r2 = square1.row() + dr;
                 int c2 = square1.column() + dc;
-                while (r2 < board.width() && c2 >= 0 && c2 < board.width()){
+                while (r2 < board.width() && c2 >= 0 && c2 < board.width()) {
                     if (board.isOccupied(r2, c2)) {
                         return true;
                     }

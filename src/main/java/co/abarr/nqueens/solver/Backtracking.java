@@ -29,7 +29,7 @@ class Backtracking implements Solver {
         } else {
             for (int row = 0; row < board.width(); row++) {
                 Board next = board.occupy(row, column);
-                if (rule.isSatisfiedBy(next)) {
+                if (rule.breachesOn(next) == 0) {
                     Optional<Board> solution = solutionFor(next, column + 1);
                     if (solution.isPresent()) {
                         return solution;
@@ -46,7 +46,7 @@ class Backtracking implements Solver {
      * This is substantially faster than brute force - on my laptop it takes
      * <1s for boards of width 10 or less.
      */
-    public static final Backtracking N_QUEENS = new Backtracking(Rule.NO_CONFLICTS);
+    public static final Backtracking N_QUEENS = new Backtracking(Rule.ATTACKS);
 
 
     /**
@@ -56,6 +56,6 @@ class Backtracking implements Solver {
      * that no three queens are in a straight line at any angle.
      */
     public static final Backtracking N_QUEENS_EXTENDED = new Backtracking(
-        Rule.union(Rule.NO_CONFLICTS, Rule.STRAIGHT_LINES.negated())
+        Rule.union(Rule.ATTACKS, Rule.STRAIGHT_LINES)
     );
 }

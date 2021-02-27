@@ -15,12 +15,11 @@ class Union implements Rule {
     }
 
     @Override
-    public boolean isSatisfiedBy(Board board) {
+    public int breachesOn(Board board) {
+        int breaches = 0;
         for (Rule rule : rules) {
-            if (!rule.isSatisfiedBy(board)) {
-                return false;
-            }
+            breaches += rule.breachesOn(board);
         }
-        return true;
+        return breaches;
     }
 }

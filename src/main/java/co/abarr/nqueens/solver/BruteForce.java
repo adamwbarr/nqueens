@@ -23,7 +23,7 @@ class BruteForce implements Solver {
 
     private Optional<Board> solve(Board board, int index) {
         if (index == board.squares()) {
-            if (rule.isSatisfiedBy(board)) {
+            if (rule.breachesOn(board) == 0) {
                 return Optional.of(board);
             } else {
                 return Optional.empty();

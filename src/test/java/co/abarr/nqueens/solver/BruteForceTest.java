@@ -1,7 +1,6 @@
 package co.abarr.nqueens.solver;
 
 import co.abarr.nqueens.Board;
-import co.abarr.nqueens.BoardSet;
 import co.abarr.nqueens.rule.Rule;
 import org.junit.jupiter.api.Test;
 

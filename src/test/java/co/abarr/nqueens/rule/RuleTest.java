@@ -10,69 +10,69 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class RuleTest {
     @Test
-    void noConflicts_OnEmptyBoard_ShouldBeTrue() {
+    void attacks_OnEmptyBoard_ShouldBeZero() {
         Board board = Board.of(8);
-        assertThat(Rule.NO_CONFLICTS.isSatisfiedBy(board)).isTrue();
+        assertThat(Rule.ATTACKS.breachesOn(board)).isEqualTo(0);
     }
 
     @Test
-    void noConflicts_OnBoardWithFewerThanNQueens_ShouldBeTrue() {
+    void attacks_OnBoardWithFewerThanNQueens_ShouldBeZero() {
         Board board = Board.fromString(
             ".x..\n" +
             "....\n" +
             "x...\n" +
             "..x."
         );
-        assertThat(Rule.NO_CONFLICTS.isSatisfiedBy(board)).isTrue();
+        assertThat(Rule.ATTACKS.breachesOn(board)).isEqualTo(0);
     }
 
     @Test
-    void noConflicts_OnBoardWithNQueens_ShouldBeTrue() {
+    void attacks_OnBoardWithNQueens_ShouldBeZero() {
         Board board = Board.fromString(
             ".x..\n" +
             "...x\n" +
             "x...\n" +
             "..x."
         );
-        assertThat(Rule.NO_CONFLICTS.isSatisfiedBy(board)).isTrue();
+        assertThat(Rule.ATTACKS.breachesOn(board)).isEqualTo(0);
     }
 
     @Test
-    void noConflicts_OnBoardWithconflicts_ShouldBeFalse() {
+    void attacks_OnBoardWithMultipleConflicts_ShouldBeCorrect() {
         Board board = Board.fromString(
-            ".x..\n" +
+            ".x.x\n" +
             "....\n" +
-            "....\n" +
+            "..x.\n" +
             ".x.."
         );
-        assertThat(Rule.NO_CONFLICTS.isSatisfiedBy(board)).isFalse();
+        assertThat(Rule.ATTACKS.breachesOn(board)).isEqualTo(3);
     }
 
     @Test
-    void nQueens_OnEmptyBoard_ShouldBeFalse() {
+    void nQueens_OnEmptyBoard_ShouldBeOne() {
         Board board = Board.of(8);
-        assertThat(Rule.N_QUEENS.isSatisfiedBy(board)).isFalse();
+        assertThat(Rule.N_QUEENS.breachesOn(board)).isEqualTo(1);
     }
 
     @Test
-    void nQueens_BoardWithInsufficientQueens_ShouldBeFalse() {
+    void nQueens_BoardWithInsufficientQueens_ShouldBeOne() {
         Board board = Board.fromString(
             ".x..\n" +
             "....\n" +
             "x...\n" +
             "..x."
         );
-        assertThat(Rule.N_QUEENS.isSatisfiedBy(board)).isFalse();
+        assertThat(Rule.N_QUEENS.breachesOn(board)).isEqualTo(1);
     }
 
     @Test
-    void nQueens_BoardWithNoConflicts_ShouldBeTrue() {
+    void nQueens_BoardWithNoConflicts_ShouldBeZero() {
         Board board = Board.fromString(
             ".x..\n" +
             "...x\n" +
             "x...\n" +
             "..x."
         );
-        assertThat(Rule.N_QUEENS.isSatisfiedBy(board)).isTrue();
+        assertThat(Rule.N_QUEENS.breachesOn(board)).isEqualTo(0);
     }
 }

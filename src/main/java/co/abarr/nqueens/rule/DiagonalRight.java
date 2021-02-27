@@ -7,7 +7,8 @@ import co.abarr.nqueens.Board;
  */
 class DiagonalRight implements Rule {
     @Override
-    public boolean isSatisfiedBy(Board board) {
+    public int breachesOn(Board board) {
+        int breaches = 0;
         for (Board.Square square : board) {
             if (square.isOccupied()) {
                 int limit = board.width() - Math.max(square.row(), square.column());
@@ -15,11 +16,11 @@ class DiagonalRight implements Rule {
                     int row = square.row() + offset;
                     int column = square.column() + offset;
                     if (board.isOccupied(row, column)) {
-                        return true;
+                        breaches++;
                     }
                 }
             }
         }
-        return false;
+        return breaches;
     }
 }

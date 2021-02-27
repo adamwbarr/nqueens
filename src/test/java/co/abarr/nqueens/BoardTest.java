@@ -110,13 +110,13 @@ class BoardTest {
     }
 
     @Test
-    void isOccupied_OfUnoccupiedSquare_ShouldBeFalse() {
+    void isOccupied_OfUnoccupiedSquare_ShouldBeZero() {
         Board board = Board.of(8).occupy(4, 5);
         assertThat(board.isOccupied(0, 0)).isFalse();
     }
 
     @Test
-    void isOccupied_OfOccupiedSquare_ShouldBeTrue() {
+    void isOccupied_OfOccupiedSquare_ShouldBeOne() {
         Board board = Board.of(8).occupy(4, 5);
         assertThat(board.isOccupied(4, 5)).isTrue();
     }

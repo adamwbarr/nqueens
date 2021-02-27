@@ -7,17 +7,18 @@ import co.abarr.nqueens.Board;
  */
 class Horizontal implements Rule {
     @Override
-    public boolean isSatisfiedBy(Board board) {
+    public int breachesOn(Board board) {
+        int breaches = 0;
         for (Board.Square square : board) {
             if (square.isOccupied()) {
                 int row = square.row();
                 for (int column = square.column() + 1; column < board.width(); column++) {
                     if (board.isOccupied(row, column)) {
-                        return true;
+                        breaches++;
                     }
                 }
             }
         }
-        return false;
+        return breaches;
     }
 }

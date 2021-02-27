@@ -12,24 +12,24 @@ class VerticalTest {
     Vertical rule = new Vertical();
 
     @Test
-    void isSatisfiedBy_BoardWithConflict_ShouldBeTrue() {
+    void breachesOn_BoardWithConflict_ShouldBeOne() {
         Board board = Board.fromString(
             "x...\n" +
             "....\n" +
             "....\n" +
             "x..."
         );
-        assertThat(rule.isSatisfiedBy(board)).isTrue();
+        assertThat(rule.breachesOn(board)).isEqualTo(1);
     }
 
     @Test
-    void isSatisfiedBy_BoardWithNoConflict_ShouldBeFalse() {
+    void breachesOn_BoardWithNoConflict_ShouldBeZero() {
         Board board = Board.fromString(
             "x...\n" +
             "..x.\n" +
             "....\n" +
             "...."
         );
-        assertThat(rule.isSatisfiedBy(board)).isFalse();
+        assertThat(rule.breachesOn(board)).isEqualTo(0);
     }
 }
