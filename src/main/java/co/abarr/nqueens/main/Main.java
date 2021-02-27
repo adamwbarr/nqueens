@@ -1,7 +1,6 @@
 package co.abarr.nqueens.main;
 
 import co.abarr.nqueens.Board;
-import co.abarr.nqueens.BoardSet;
 import co.abarr.nqueens.solver.Solver;
 
 /**
@@ -12,22 +11,23 @@ public class Main {
         int width = widthFrom(args);
         System.out.printf("Solving for %dx%<d board...\n", width);
         long t0 = System.currentTimeMillis();
-        BoardSet solutions = Solver.N_QUEENS_EXTENDED.solveFor(width);
-        long d = System.currentTimeMillis() - t0;
-        String separator = "-".repeat(width);
-        System.out.println(separator);
-        for (Board solution : solutions) {
-            System.out.println(solution);
-            System.out.println(separator);
+        Solver solver;
+        if (isOriginalFrom(args)) {
+            solver = Solver.N_QUEENS;
+        } else {
+            solver = Solver.N_QUEENS_EXTENDED;
         }
-        System.out.printf("Found %d solutions in %dms\n", solutions.size(), d);
+        Board solution = solver.solveFor(width);
+        long d = System.currentTimeMillis() - t0;
+        System.out.println(solution);
+        System.out.printf("Found solution in %dms\n", d);
     }
 
     private static int widthFrom(String[] args) {
-        if (args.length == 0) {
-            return 8;
-        } else {
-            return Integer.parseInt(args[0]);
-        }
+        return Integer.parseInt(args[0]);
+    }
+
+    private static boolean isOriginalFrom(String[] args) {
+        return args.length == 2 && args[1].equals("--original");
     }
 }

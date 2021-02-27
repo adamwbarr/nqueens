@@ -1,10 +1,10 @@
 package co.abarr.nqueens.solver;
 
 import co.abarr.nqueens.Board;
-import co.abarr.nqueens.BoardSet;
 import co.abarr.nqueens.rule.Rule;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created by adam on 06/01/2021.
@@ -17,21 +17,24 @@ class BruteForce implements Solver {
     }
 
     @Override
-    public BoardSet solveFor(int width) {
-        return solve(Board.of(width), 0);
+    public Board solveFor(int width) {
+        return solve(Board.of(width), 0).orElseThrow();
     }
 
-    private BoardSet solve(Board board, int index) {
+    private Optional<Board> solve(Board board, int index) {
         if (index == board.squares()) {
             if (rule.isSatisfiedBy(board)) {
-                return BoardSet.of(board);
+                return Optional.of(board);
             } else {
-                return BoardSet.empty();
+                return Optional.empty();
             }
         } else {
-            BoardSet unoccupied = solve(board, index + 1);
-            BoardSet occupied = solve(board.occupy(index), index + 1);
-            return unoccupied.plus(occupied);
+            Optional<Board> unoccupied = solve(board, index + 1);
+            if (unoccupied.isPresent()) {
+                return unoccupied;
+            } else {
+                return solve(board.occupy(index), index + 1);
+            }
         }
     }
 }

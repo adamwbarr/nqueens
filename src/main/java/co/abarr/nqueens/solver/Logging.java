@@ -1,6 +1,6 @@
 package co.abarr.nqueens.solver;
 
-import co.abarr.nqueens.BoardSet;
+import co.abarr.nqueens.Board;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,16 +18,15 @@ class Logging implements Solver {
     }
 
     @Override
-    public BoardSet solveFor(int width) {
+    public Board solveFor(int width) {
         long t0 = System.currentTimeMillis();
-        BoardSet solutions = delegate.solveFor(width);
+        Board solution = delegate.solveFor(width);
         logger.info(
-            "Took {}ms to find {} solutions for board of width {} with {}",
+            "Took {}ms to find solution for board of width {} with {}",
             System.currentTimeMillis() - t0,
-            solutions.size(),
             width,
             delegate
         );
-        return solutions;
+        return solution;
     }
 }

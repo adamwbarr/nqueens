@@ -1,7 +1,6 @@
 package co.abarr.nqueens.solver;
 
 import co.abarr.nqueens.Board;
-import co.abarr.nqueens.BoardSet;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,28 +11,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BacktrackingTest {
     @Test
     void solveFor_NQueens_ShouldReturnCorrectSolutionsForSize4() {
-        Solver solver = new Backtracking();
-        BoardSet boards = solver.solveFor(4);
-        assertThat(boards).containsExactly(
-            Board.fromString(
-                ".x..\n" +
-                "...x\n" +
-                "x...\n" +
-                "..x."
-            ),
-            Board.fromString(
-                "..x.\n" +
-                "x...\n" +
-                "...x\n" +
-                ".x.."
-            )
-        );
+        Solver solver = Backtracking.N_QUEENS;
+        Board board = solver.solveFor(4);
+        assertThat(board).isEqualTo(Board.fromString(
+            "..x.\n" +
+            "x...\n" +
+            "...x\n" +
+            ".x.."
+        ));
     }
 
     @Test
-    void solveFor_NQueens_ShouldReturnCorrectNumberOfSolutionsForSize8() {
-        Solver solver = new Backtracking();
-        BoardSet boards = solver.solveFor(8);
-        assertThat(boards).hasSize(92);
+    void solveFor_NQueens_ShouldReturnCorrectSolutionForSize8() {
+        Solver solver = Backtracking.N_QUEENS;
+        Board board = solver.solveFor(8);
+        assertThat(board).isEqualTo(Board.fromString(
+            "x.......\n" +
+            "......x.\n" +
+            "....x...\n" +
+            ".......x\n" +
+            ".x......\n" +
+            "...x....\n" +
+            ".....x..\n" +
+            "..x....."
+        ));
+    }
+
+    @Test
+    void solveFor_NQueensExtended_ShouldReturnCorrectSolutionForSize8() {
+        Solver solver = Backtracking.N_QUEENS_EXTENDED;
+        Board board = solver.solveFor(8);
+        assertThat(board).isEqualTo(Board.fromString(
+            "....x...\n" +
+            "......x.\n" +
+            "x.......\n" +
+            "...x....\n" +
+            ".x......\n" +
+            ".......x\n" +
+            ".....x..\n" +
+            "..x....."
+        ));
     }
 }

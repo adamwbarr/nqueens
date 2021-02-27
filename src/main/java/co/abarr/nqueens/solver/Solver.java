@@ -1,6 +1,6 @@
 package co.abarr.nqueens.solver;
 
-import co.abarr.nqueens.BoardSet;
+import co.abarr.nqueens.Board;
 import co.abarr.nqueens.rule.Rule;
 
 /**
@@ -13,22 +13,15 @@ import co.abarr.nqueens.rule.Rule;
  */
 public interface Solver {
     /**
-     * Finds all boards of given width that solve the problem.
+     * Finds a boards of given width that solves the problem.
      */
-    BoardSet solveFor(int width);
+    Board solveFor(int width);
 
     /**
      * Logs a simple summary of what happened.
      */
     default Solver logging() {
         return new Logging(this);
-    }
-
-    /**
-     * Excludes solutions that don't satisfy the supplied rule.
-     */
-    default Solver filter(Rule rule) {
-        return width -> solveFor(width).filter(rule);
     }
 
     /**
@@ -46,7 +39,7 @@ public interface Solver {
      * This is substantially faster than brute force - on my laptop it takes
      * <1s for boards of width 10 or less.
      */
-    Solver N_QUEENS = new Backtracking();
+    Solver N_QUEENS = Backtracking.N_QUEENS;
 
     /**
      * A solver for the extended n-queens problem.
@@ -54,5 +47,5 @@ public interface Solver {
      * This is defined as the n-queens problem, with the additional constraint
      * that no three queens are in a straight line at any angle.
      */
-    Solver N_QUEENS_EXTENDED = N_QUEENS.filter(Rule.STRAIGHT_LINES.negated());
+    Solver N_QUEENS_EXTENDED = Backtracking.N_QUEENS_EXTENDED;
 }

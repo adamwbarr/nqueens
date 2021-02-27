@@ -14,20 +14,12 @@ class BruteForceTest {
     @Test
     void solveFor_NQueens_ShouldReturnCorrectSolutionsForSize4() {
         Solver solver = new BruteForce(Rule.N_QUEENS);
-        BoardSet boards = solver.solveFor(4);
-        assertThat(boards).containsExactly(
-            Board.fromString(
-                ".x..\n" +
-                "...x\n" +
-                "x...\n" +
-                "..x."
-            ),
-            Board.fromString(
-                "..x.\n" +
-                "x...\n" +
-                "...x\n" +
-                ".x.."
-            )
-        );
+        Board board = solver.solveFor(4);
+        assertThat(board).isEqualTo(Board.fromString(
+            "..x.\n" +
+            "x...\n" +
+            "...x\n" +
+            ".x.."
+        ));
     }
 }
